@@ -10,11 +10,11 @@ Denna stilguiden är för det mesta baserat på standards som för närvarande �
   1. [Grundläggande regler](#grundläggande-regler)
   1. [Class vs `React.createClass` vs stateless](#class-vs-reactcreateclass-vs-stateless)
   1. [Mixins](#mixins)
-  1. [Namngivning](#naming)
-  1. [Deklarationer](#declaration)
+  1. [Namngivning](#namngivning)
+  1. [Deklaration](#deklaration)
   1. [Alignment](#alignment)
   1. [Quotes](#quotes)
-  1. [Spacing](#spacing)
+  1. [Mellanrum](#mellanrum)
   1. [Props](#props)
   1. [Refs](#refs)
   1. [Parentheses](#parentheses)
@@ -33,10 +33,10 @@ Denna stilguiden är för det mesta baserat på standards som för närvarande �
 
 ## Class vs `React.createClass` vs stateless
 
-  - If you have internal state and/or refs, prefer `class extends React.Component` over `React.createClass`. eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md) [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
+  - Om du har lokalt state och/eller refs, föredras `class extends React.Component` över `React.createClass`. eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md) [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
 
     ```jsx
-    // bad
+    // dåligt
     const Listing = React.createClass({
       // ...
       render() {
@@ -44,7 +44,7 @@ Denna stilguiden är för det mesta baserat på standards som för närvarande �
       }
     });
 
-    // good
+    // bra
     class Listing extends React.Component {
       // ...
       render() {
@@ -53,22 +53,23 @@ Denna stilguiden är för det mesta baserat på standards som för närvarande �
     }
     ```
 
-    And if you don’t have state or refs, prefer normal functions (not arrow functions) over classes:
+    Och om du inte har state eller refs, föredras normala funktioner (inte tjocka pilfunktioner) över klasser:
 
     ```jsx
-    // bad
+    // dåligt
     class Listing extends React.Component {
       render() {
         return <div>{this.props.hello}</div>;
       }
     }
 
-    // bad (relying on function name inference is discouraged)
+    // dåligt
+    // (att förlita sig på function name inference är inte uppmuntrat)
     const Listing = ({ hello }) => (
       <div>{hello}</div>
     );
 
-    // good
+    // bra
     function Listing({ hello }) {
       return <div>{hello}</div>;
     }
@@ -76,55 +77,55 @@ Denna stilguiden är för det mesta baserat på standards som för närvarande �
 
 ## Mixins
 
-  - [Do not use mixins](https://facebook.github.io/react/blog/2016/07/13/mixins-considered-harmful.html).
+  - [Använd inte mixins](https://facebook.github.io/react/blog/2016/07/13/mixins-considered-harmful.html).
 
-  > Why? Mixins introduce implicit dependencies, cause name clashes, and cause snowballing complexity. Most use cases for mixins can be accomplished in better ways via components, higher-order components, or utility modules.
+  > Varför? Mixins introducerar implicita beroenden, orsakar namnkollisioner och orsakar snöbollskomplexitet. De flesta användningsfall för mixins kan åstadkommas på bättre sätt via komponenter, komponenter med högre ordning(HOC) eller verktygsmoduler.
 
-## Naming
+## Namngivning
 
-  - **Extensions**: Use `.jsx` extension for React components. eslint: [`react/jsx-filename-extension`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md)
-  - **Filename**: Use PascalCase for filenames. E.g., `ReservationCard.jsx`.
-  - **Reference Naming**: Use PascalCase for React components and camelCase for their instances. eslint: [`react/jsx-pascal-case`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-pascal-case.md)
+  - **Ändelser**: Använd `.jsx` ändelsen för React komponenter. eslint: [`react/jsx-filename-extension`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md)
+  - **Filenamn**:  Använd _PascalCase_ för filnamn, så som: `ReservationCard.jsx`.
+  - **Reference Naming**: Använd _PascalCase_ för react komponenter och _camelCase_ för dennes instans. eslint: [`react/jsx-pascal-case`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-pascal-case.md)
 
     ```jsx
-    // bad
+    // dåligt
     import reservationCard from './ReservationCard';
 
-    // good
+    // bra
     import ReservationCard from './ReservationCard';
 
-    // bad
+    // dåligt
     const ReservationItem = <ReservationCard />;
 
-    // good
+    // bra
     const reservationItem = <ReservationCard />;
     ```
 
-  - **Component Naming**: Use the filename as the component name. For example, `ReservationCard.jsx` should have a reference name of `ReservationCard`. However, for root components of a directory, use `index.jsx` as the filename and use the directory name as the component name:
+- **Namngivning av komponenter**: Använd samma filnamn som namn av komponenten, t.ex. `ReservationCard.jsx` ska referera till `ReservationCard`. Däremot, för n maps root komponent används `index.jsx` som filnamn och mappens namn används som komponentensnamn:
 
     ```jsx
-    // bad
+    // dåligt
     import Footer from './Footer/Footer';
 
-    // bad
+    // dåligt
     import Footer from './Footer/index';
 
-    // good
+    // bra
     import Footer from './Footer';
     ```
-  - **Higher-order Component Naming**: Use a composite of the higher-order component’s name and the passed-in component’s name as the `displayName` on the generated component. For example, the higher-order component `withFoo()`, when passed a component `Bar` should produce a component with a `displayName` of `withFoo(Bar)`.
+- **Namngivning av Higher-order component (HOC)**:En komponent som tar emot och/eller returerar en funktion, använd en komposition av HOC komponentens namn och den komponent som inkapslas som `displayName` på den genererade komponent. Till exempel, HOC komponenten `withFoo()`, som inkapslar komponenten `Bar` ska producera en komponent med ett `displayName` of `withFoo(Bar)`.
 
-    > Why? A component’s `displayName` may be used by developer tools or in error messages, and having a value that clearly expresses this relationship helps people understand what is happening.
+    > Varför? En komponents "displayName" kan användas av utvecklarverktyg eller i felmeddelanden, och med ett värde som tydligt uttrycker denna relation hjälper det folk att förstå vad som händer.
 
     ```jsx
-    // bad
+    // dåligt
     export default function withFoo(WrappedComponent) {
       return function WithFoo(props) {
         return <WrappedComponent {...props} foo />;
       }
     }
 
-    // good
+    // bra
     export default function withFoo(WrappedComponent) {
       function WithFoo(props) {
         return <WrappedComponent {...props} foo />;
@@ -139,56 +140,59 @@ Denna stilguiden är för det mesta baserat på standards som för närvarande �
     }
     ```
 
-  - **Props Naming**: Avoid using DOM component prop names for different purposes.
+- **Namngivning av props**: Undvik att använda namn som refererar till DOM komponentens prop namn för olika anledningar.
 
-    > Why? People expect props like `style` and `className` to mean one specific thing. Varying this API for a subset of your app makes the code less readable and less maintainable, and may cause bugs.
+  Avoid using DOM component prop names for different purposes.
+
+    > Varför? Folk förväntar sig att props som "style" och "className" betyder en specifik sak. Om du använder detta API för en del av din app gör att koden blir mindre läsbar och mindre underhållbar och kan orsaka buggar.
+
 
     ```jsx
-    // bad
+    // dåligt
     <MyComponent style="fancy" />
 
-    // bad
+    // dåligt
     <MyComponent className="fancy" />
 
-    // good
+    // bra
     <MyComponent variant="fancy" />
     ```
 
-## Declaration
-
-  - Do not use `displayName` for naming components. Instead, name the component by reference.
+## Deklaration
+  - Använd inte `displayName` för namngivning av komponenter. Namnge komponenten genom att referera
 
     ```jsx
-    // bad
+    // dåligt
     export default React.createClass({
       displayName: 'ReservationCard',
       // stuff goes here
     });
 
-    // good
+    // bra
     export default class ReservationCard extends React.Component {
     }
     ```
 
 ## Alignment
 
-  - Follow these alignment styles for JSX syntax. eslint: [`react/jsx-closing-bracket-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md) [`react/jsx-closing-tag-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-tag-location.md)
+  - Följ dessa stiler för placering av JSX syntax. eslint: [`react/jsx-closing-bracket-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md) [`react/jsx-closing-tag-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-tag-location.md)
+
 
     ```jsx
-    // bad
+    // dåligt
     <Foo superLongParam="bar"
          anotherSuperLongParam="baz" />
 
-    // good
+    // bra
     <Foo
       superLongParam="bar"
       anotherSuperLongParam="baz"
     />
 
-    // if props fit in one line then keep it on the same line
+    // om props får plats på en rad så håll det på samma rad
     <Foo bar="bar" />
 
-    // children get indented normally
+    // barn indenteras normallt
     <Foo
       superLongParam="bar"
       anotherSuperLongParam="baz"
@@ -196,72 +200,72 @@ Denna stilguiden är för det mesta baserat på standards som för närvarande �
       <Quux />
     </Foo>
 
-    // bad
+    // dåligt
     {showButton &&
       <Button />
     }
 
-    // bad
+    // dåligt
     {
       showButton &&
         <Button />
     }
 
-    // good
+    // bra
     {showButton && (
       <Button />
     )}
 
-    // good
+    // bra
     {showButton && <Button />}
     ```
 
 ## Quotes
 
-  - Always use double quotes (`"`) for JSX attributes, but single quotes (`'`) for all other JS. eslint: [`jsx-quotes`](https://eslint.org/docs/rules/jsx-quotes)
+  - Använd alltid citattecken (`"`) för JSX attributer, använd apostrof (`'`) för all annan JS. eslint: [`jsx-quotes`](https://eslint.org/docs/rules/jsx-quotes)
 
     > Why? Regular HTML attributes also typically use double quotes instead of single, so JSX attributes mirror this convention.
 
     ```jsx
-    // bad
+    // dåligt
     <Foo bar='bar' />
 
-    // good
+    // bra
     <Foo bar="bar" />
 
-    // bad
+    // dåligt
     <Foo style={{ left: "20px" }} />
 
-    // good
+    // bra
     <Foo style={{ left: '20px' }} />
     ```
 
-## Spacing
+## Mellanrum
 
-  - Always include a single space in your self-closing tag. eslint: [`no-multi-spaces`](https://eslint.org/docs/rules/no-multi-spaces), [`react/jsx-tag-spacing`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-tag-spacing.md)
+  - Inkludera alltid ett mellanrum i dina själv-stängande taggar. eslint: [`no-multi-spaces`](https://eslint.org/docs/rules/no-multi-spaces), [`react/jsx-tag-spacing`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-tag-spacing.md)
 
     ```jsx
-    // bad
+    // dåligt
     <Foo/>
 
-    // very bad
+    // väldigt dåligt
     <Foo                 />
 
-    // bad
+    // dåligt
     <Foo
      />
 
-    // good
+    // bra
     <Foo />
     ```
 
-  - Do not pad JSX curly braces with spaces. eslint: [`react/jsx-curly-spacing`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-curly-spacing.md)
+  - Fyll inte JSX curly braces med mellanrum. eslint: [`react/jsx-curly-spacing`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-curly-spacing.md)
 
     ```jsx
-    // bad
+    // dåligt
     <Foo bar={ baz } />
 
-    // good
+    // bra
     <Foo bar={baz} />
     ```
 
