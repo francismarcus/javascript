@@ -1,16 +1,17 @@
 # Airbnb React/JSX Style Guide
 
-*A mostly reasonable approach to React and JSX*
+*En mestadels rimlig guide för React och JSX*
 
-This style guide is mostly based on the standards that are currently prevalent in JavaScript, although some conventions (i.e async/await or static class fields) may still be included or prohibited on a case-by-case basis. Currently, anything prior to stage 3 is not included nor recommended in this guide.
+Denna stilguiden är för det mesta baserat på standards som för närvarande är allmänt förekommande i JavaScript, även om vissa konventioner (t.ex. async / await eller static klassfält) fortfarande kan inkluderas eller förbjudas från fall till fall. För närvarande ingår inte något före steg 3 och rekommanderas inte i den här guiden.
 
-## Table of Contents
 
-  1. [Basic Rules](#basic-rules)
+## Innehållsförteckning
+
+  1. [Grundläggande regler](#grundläggande-regler)
   1. [Class vs `React.createClass` vs stateless](#class-vs-reactcreateclass-vs-stateless)
   1. [Mixins](#mixins)
-  1. [Naming](#naming)
-  1. [Declaration](#declaration)
+  1. [Namngivning](#naming)
+  1. [Deklarationer](#declaration)
   1. [Alignment](#alignment)
   1. [Quotes](#quotes)
   1. [Spacing](#spacing)
@@ -22,13 +23,13 @@ This style guide is mostly based on the standards that are currently prevalent i
   1. [Ordering](#ordering)
   1. [`isMounted`](#ismounted)
 
-## Basic Rules
+## Grundläggande regler
 
-  - Only include one React component per file.
-    - However, multiple [Stateless, or Pure, Components](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) are allowed per file. eslint: [`react/no-multi-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-multi-comp.md#ignorestateless).
-  - Always use JSX syntax.
-  - Do not use `React.createElement` unless you’re initializing the app from a file that is not JSX.
-  - [`react/forbid-prop-types`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/forbid-prop-types.md) will allow `arrays` and `objects` only if it is explicitly noted what `array` and `object` contains, using `arrayOf`, `objectOf`, or `shape`.
+  - Endast en React komponent per fil.
+    - Däremot är flera [Stateless, or Pure, Components](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) tillåtna per fil. eslint: [`react/no-multi-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-multi-comp.md#ignorestateless).
+  - Använd alltid JSX syntas.
+  - Använd inte `React.createElement` såvidare du inte initierar appen från en fil som inte är JSX.
+  - [`react/forbid-prop-types`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/forbid-prop-types.md) tillåter `arrays` och `object` endast om det uttryckligen anges vad en `array` och `object` innehåller, genom `arrayOf`, `objectOf`, eller `shape`.
 
 ## Class vs `React.createClass` vs stateless
 
